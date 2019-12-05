@@ -1,0 +1,215 @@
+<html>
+    <head>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mapwize@4.0.1/mapwize.js"></script>
+        <style>
+            #mapwize {
+                position: relative;
+                height: 100%; 
+                padding-left: 0px !important;
+            }
+            #rightmenu {
+                position: relative;
+                height: 100%;
+                
+            }
+            .my-custom-marker {
+                background-color: #69b900;
+                font-size: larger;
+                color: white;
+                padding: 8px;
+                font-weight: bolder;
+            }
+
+            .dot {
+                height: 25px;
+                width: 25px;
+                border-radius: 50%;
+                display: inline-block;
+                padding-bottom: 26px;
+            }
+            .btn-print {
+                width: 90%;
+                border-radius: 4rem !important;
+                background-color: #793eff !important;
+                border-color: #793eff !important;
+            }
+        </style>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+          <div class="row h-100" >
+            <div id="mapwize" class="col-9"></div>
+            <div id="rightmenu" class="col-3">
+                <div class="row h-100">
+                    <div class="col-sm-12 text-center" style="margin-top: auto; margin-bottom: auto;">
+                        <div class="font-weight-bold">
+                            <img src="./logo.png" alt="FCA">    
+                        </div>
+
+                        <div class="font-weight-bold">
+                            <p>Voce percorrerá um total de:</p>
+                            <p id="distance"></p>
+                            <p>metros!</p>
+                        </div>
+
+                        <div class="font-weight-bold">
+                            <button class="btn btn-success " onclick="reset()">REINICIAR</button>
+                        </div>
+                        
+                        <div style="padding-top: 30px;">
+                            <img src="./qr_img.png" alt="https://tinyurl.com/fca_workshop">
+                            <small>https://tinyurl.com/fca_workshop</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>  
+
+        <script>
+            this.places_to_visit = [];
+            thiz = this;
+            thiz.click = 0
+            
+
+            origin = '5de678ba96760d0016eb5f4c';
+            plot_route = (map, point_clicked) => {
+                id = point_clicked;
+
+                not_there = (thiz.places_to_visit.filter(v => v.placeId===id).length === 0);
+                map.removeMarkers();
+
+                if (point_clicked!=="") {
+                    new_color = '#8b72a2';
+                    if(not_there) {
+                        thiz.places_to_visit.push({placeId: id});
+                        new_color = '#793eff';
+                    } else {
+                        thiz.places_to_visit = thiz.places_to_visit.filter(v => v.placeId!==id);
+                    }
+                
+                
+                    place_style = {
+                        fillColor: new_color
+                    };
+                    map.setPlaceStyle(id, place_style);
+                }
+                console.log('000',thiz.places_to_visit)
+
+                Mapwize.Api.getDirection({
+                    from: {placeId: origin},
+                    to: {placeId: origin},
+                    waypoints:thiz.places_to_visit,
+                    options: {waypointOptimize: true}
+
+                }).then(direction => {
+                    // map.setDirection(direction, {centerOnStart: false});
+                    // map.setPaintProperty('mapwize_layer_direction_line', 'line-dasharray' , [10,10])
+
+                    thiz.direction = direction;
+                    $('#distance').text(direction.distance.toFixed(2))
+                    map.removeLayer('lines'+thiz.click);
+                    thiz.click = thiz.click + 1;
+                    features = direction.route.map(coords => ({
+                        'type':'Feature', 
+                        'properties': {'color': '#69b900'}, 
+                        'geometry': {'type':'LineString', 'coordinates': coords.path.map(path => [path[1], path[0]])} 
+                        })
+                    );
+                    features[features.length-1].properties.color = '#F7455D'
+
+                    layer_ = {
+                        'id': 'lines'+thiz.click,
+                        'type': 'line',
+                            'source': {
+                            'type': 'geojson',
+                            'data': {
+                                'type': 'FeatureCollection',
+                                'features': features
+                            }
+                        },
+                        'paint': {
+                            'line-width': 5,
+                            "line-opacity": 0.5,
+                            'line-dasharray': [10, 5],
+                            'line-color': ['get', 'color']
+                        }
+                    }
+                    thiz.layer_ = layer_
+                    map.addLayer(layer_);
+
+                    direction.waypoints.forEach((element, idx) => {
+                        el = document.createElement('div');
+                        el.innerHTML += ''+(idx+1);
+                        el.className = 'marker my-custom-marker dot';
+                        
+
+                        myCustomMarker = new Mapwize.Marker(el);
+
+                        map.addMarker(element, myCustomMarker).then(marker => {
+                            // Marker as been added on map
+                            
+                        }).catch(err => {
+                            return  console.error('addMarker failed', err);
+                        });
+                    });
+
+                    // divs_to_remove = document.getElementsByClassName('mwzDirectionChangeFloorIcon')
+                    // divs_to_remove.forEach(el => {
+                    //     while ( el.firstChild ) { 
+                    //         el.removeChild( el.firstChild );
+                    //     }
+                    // });
+                });
+            }
+
+            reset = (e) => {
+                var dis = 0;
+                $('#distance').text(dis.toFixed(2));
+                thiz.places_to_visit = [];
+                plot_route(thiz.map, '')
+            };
+
+            Mapwize.apiKey('d119c0b572bfd3e2c9d9df01a031b65c')
+            Mapwize.map({
+                container: 'mapwize',
+                mainColor: '#69b900',
+                maxBounds: [ [-35.169618, -5.880273], [
+                -35.168779, -5.879928] ],
+                center: [-35.169206, -5.880111],
+	            // minZoom:  11,
+            }).then(map => {
+                // map.centerOnVenue('5ddd4db73b768a00169c81c9');
+                thiz.map = map;
+                map.centerOnPlace('5de67c71a57a400016a959e2', {zoom:18});
+                reset();
+                
+                map.on('mapwize:click', e => {
+                    if (e.place != null) {
+                        id = e.place._id;
+
+                        if (id===origin) return;
+                        
+                        plot_route(map, id);
+                    }
+                });
+
+            }).catch(err => {
+                console.error(err);
+            });
+
+            
+            
+
+        </script>
+
+        
+    </body>
+</html>
