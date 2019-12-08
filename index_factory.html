@@ -54,9 +54,10 @@
                         </div>
 
                         <div class="font-weight-bold">
-                            <p>Voce percorrerá um total de:</p>
-                            <p id="distance"></p>
-                            <p>metros!</p>
+                            <h5>Rota Dinâmica: </h5>
+                            <p>Voce percorrerá um total de: <i id="distance"></i> metros! </p>
+                            <h5>Rota Fixa: <i id="name_static"></i></h5>
+                            <p id='static_message'>Voce percorrerá um total de: <i id="distance_static"></i> metros! </p>
                         </div>
 
                         <div class="font-weight-bold">
@@ -64,7 +65,8 @@
                         </div>
                         
                         <div style="padding-top: 30px;">
-                            <img src="./qr_img.png" alt="https://tinyurl.com/fca_factory">
+                            <img width="200" src="./qr_img.png" alt="https://tinyurl.com/fca_factory">
+                            <br />
                             <small>https://tinyurl.com/fca_factory</small>
                         </div>
                     </div>
@@ -75,6 +77,205 @@
 
         <script>
             this.places_to_visit = [];
+            this.static_routes = {
+                'brasil': {
+                    'id': 'brasil',
+                    'type': 'line',
+                        'source': {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': [{
+                                'type':'Feature', 
+                                'properties': {'color': '#000000'}, 
+                                'geometry': {
+                                    'type':'LineString', 
+                                    'coordinates': [
+                                        [-35.154051, -5.862964],
+                                        [-35.154008, -5.863241],
+                                        [-35.150864, -5.863230],
+                                        [-35.150875, -5.867788],
+                                        [-35.152012, -5.867777],
+                                        [-35.152023, -5.867585],
+                                        [-35.152667, -5.867596],
+                                        [-35.152747, -5.867681],
+                                        [-35.154946, -5.867668],
+                                        [-35.154954, -5.868092],
+                                        [-35.156845, -5.868124],
+                                        [-35.156849, -5.863085],
+                                        [-35.155880, -5.863086],
+                                        [-35.155862, -5.863202],
+                                        [-35.154032, -5.863196],
+                                        [-35.154051, -5.862964]
+                                    ]
+                                } 
+                            }]
+                        }
+                    },
+                    'paint': {
+                        'line-width': 4,
+                        "line-opacity": 0.5,
+                        'line-dasharray': [1, 1],
+                        'line-color': ['get', 'color']
+                    }
+                },
+                'europa': {
+                    'id': 'europa',
+                    'type': 'line',
+                        'source': {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': [{
+                                'type':'Feature', 
+                                'properties': {'color': '#000000'}, 
+                                'geometry': {
+                                    'type':'LineString', 
+                                    'coordinates': [
+                                        [-35.154051, -5.862964],
+                                        [-35.154008, -5.863241],
+                                        
+                                        [-35.150869, -5.863230],
+                                        [-35.150869, -5.865813],
+                                        [-35.151119, -5.865813],
+                                        [-35.151119, -5.867022],
+                                        [-35.154938, -5.867022],
+                                        [-35.154938, -5.868089],
+                                        [-35.155453, -5.868089],
+                                        [-35.155453, -5.863196],
+                                        
+                                        [-35.154032, -5.863196],
+                                        [-35.154051, -5.862964]
+                                    ]
+                                } 
+                            }]
+                        }
+                    },
+                    'paint': {
+                        'line-width': 4,
+                        "line-opacity": 0.5,
+                        'line-dasharray': [1, 1],
+                        'line-color': ['get', 'color']
+                    }
+                },
+                'asia': {
+                    'id': 'asia',
+                    'type': 'line',
+                        'source': {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': [{
+                                'type':'Feature', 
+                                'properties': {'color': '#000000'}, 
+                                'geometry': {
+                                    'type':'LineString', 
+                                    'coordinates': [
+                                        [-35.154051, -5.862964],
+                                        [-35.154008, -5.863241],
+                                        
+                                        [-35.153455, -5.863230],
+                                        [-35.153455, -5.865813],
+                                        [-35.151969, -5.865813],
+                                        [-35.151969, -5.866510],
+                                        [-35.154944, -5.866510],
+                                        [-35.154944, -5.868081],
+                                        [-35.156848, -5.868081],
+                                        [-35.156848, -5.863097],
+                                        [-35.155907, -5.863097],
+                                        [-35.155861, -5.863193],
+                                        [-35.155861, -5.867808],
+                                        [-35.155453, -5.867808],
+                                        [-35.155453, -5.863193],
+
+                                        [-35.154032, -5.863196],
+                                        [-35.154051, -5.862964]
+                                    ]
+                                } 
+                            }]
+                        }
+                    },
+                    'paint': {
+                        'line-width': 4,
+                        "line-opacity": 0.5,
+                        'line-dasharray': [1, 1],
+                        'line-color': ['get', 'color']
+                    }
+                },
+                'oceania': {
+                    'id': 'oceania',
+                    'type': 'line',
+                        'source': {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': [{
+                                'type':'Feature', 
+                                'properties': {'color': '#000000'}, 
+                                'geometry': {
+                                    'type':'LineString', 
+                                    'coordinates': [
+                                        [-35.154051, -5.862964],
+                                        [-35.154008, -5.863241],
+                                        
+                                        [-35.151604, -5.863241],
+                                        [-35.151604, -5.863861],
+                                        [-35.151643, -5.864039],
+                                        [-35.151643, -5.865797],
+                                        [-35.151956, -5.865797],
+                                        [-35.151956, -5.865973],
+                                        [-35.154951, -5.865973],
+                                        [-35.154951, -5.866508],
+                                        [-35.155450, -5.866508],
+                                        [-35.155450, -5.863206],
+                                        [-35.154948, -5.863206],
+                                        [-35.154948, -5.866492],
+                                        [-35.155465, -5.866492],
+                                        [-35.155465, -5.863186],
+
+                                        [-35.154032, -5.863196],
+                                        [-35.154051, -5.862964]
+                                    ]
+                                } 
+                            }]
+                        }
+                    },
+                    'paint': {
+                        'line-width': 4,
+                        "line-opacity": 0.5,
+                        'line-dasharray': [1, 1],
+                        'line-color': ['get', 'color']
+                    }
+                }
+            }
+            this.routes_name = ['asia', 'europa', 'oceania', 'brasil'];
+            this.routes_dist = {'europa': 5000, 'asia': 6000, 'oceania':5500, 'brasil':4000};
+            this.id_map_to_static_route = {
+                '5de95557e15b1d0016ae0f21': 'europa',
+                '5de955854f7a350016fbbb90': 'europa',
+                '5de955adccc10f001655d3ac': 'europa',
+                '5de955f5cbed9b00161b4671': 'europa',
+                '5de95617ccada8001682ef19': 'europa',
+                '5de956394f7a350016fbbb92': 'europa',
+                '5de9566dccc10f001655d3ae': 'oceania',
+                '5de956aeccada8001682ef1b': 'asia',
+                '5de95855742fae00169f78cb': 'asia',
+                '5de958d3e15b1d0016ae0f24': 'oceania',
+                '5de959649baff70016199f50': 'asia',
+                '5de95994cbed9b00161b4674': 'asia',
+                '5de959d4cbed9b00161b4678': 'asia',
+                '5de959f44f7a350016fbbb94': 'brasil',
+                '5de95a4b9baff70016199f53': 'asia',
+                '5de95a7e4f7a350016fbbb96': 'brasil',
+                '5de95ab1ccada8001682ef1e': 'brasil',
+                '5de95b0e9baff70016199f55': 'brasil',
+                '5de95bb6e15b1d0016ae0f2b': 'brasil',
+                '5de95f3ccbed9b00161b4683': 'oceania',
+                '5de95fac9baff70016199f5f': 'europa',
+                '5de966e6ccada8001682ef26': 'asia',
+                '5de96728cbed9b00161b4688': 'oceania',
+                '5de9676accc10f001655d3bb': 'oceania',
+            }
             thiz = this;
             thiz.click = 0
             
@@ -84,6 +285,8 @@
                 id = point_clicked;
 
                 not_there = (thiz.places_to_visit.filter(v => v.placeId===id).length === 0);
+                
+                thiz.routes_name.forEach(name => {if(map.getSource(name)!==undefined) {map.removeLayer(name); map.removeSource(name);}});
                 map.removeMarkers();
 
                 if (point_clicked!=="") {
@@ -95,13 +298,27 @@
                         thiz.places_to_visit = thiz.places_to_visit.filter(v => v.placeId!==id);
                     }
                 
-                
                     place_style = {
                         fillColor: new_color
                     };
                     map.setPlaceStyle(id, place_style);
                 }
                 console.log('000',thiz.places_to_visit)
+
+                static_route_to_plot = new Set();
+                thiz.places_to_visit.forEach(place => static_route_to_plot.add(thiz.id_map_to_static_route[place.placeId]));
+                
+                if (static_route_to_plot.size > 1) {
+                    $('#distance_static').text('');
+                    $('#name_static').text('Impossível!')
+                    $('#static_message').text('Não é possével passar por todos esses gravitacionais com apenas uma rota estática. São necessárias '+static_route_to_plot.size+'.');
+                } else if (static_route_to_plot.size === 1) {
+                    route_name = static_route_to_plot.entries().next().value[0];
+                    $('#distance_static').text(thiz.routes_dist[route_name].toFixed(2));
+                    $('#name_static').text(route_name);
+                    map.addLayer(thiz.static_routes[route_name]);
+                }
+
 
                 Mapwize.Api.getDirection({
                     from: {placeId: origin},
@@ -136,9 +353,9 @@
                             }
                         },
                         'paint': {
-                            'line-width': 5,
+                            'line-width': 4,
                             "line-opacity": 0.5,
-                            'line-dasharray': [10, 5],
+                            'line-dasharray': [1, 1],
                             'line-color': ['get', 'color']
                         }
                     }
@@ -167,6 +384,16 @@
             reset = (e) => {
                 var dis = 0;
                 $('#distance').text(dis.toFixed(2));
+                $('#distance_static').text(dis.toFixed(2));
+                $('#name_static').text('');
+                $('#static_message').html('Voce percorrerá um total de: <i id="distance_static"> 0.00</i> metros!');
+
+                thiz.places_to_visit.forEach(place => {
+                    place_style = {
+                        fillColor: '#8b72a2'
+                    };
+                    map.setPlaceStyle(place.placeId, place_style);
+                });
                 thiz.places_to_visit = [];
                 plot_route(thiz.map, '')
             };
@@ -186,6 +413,7 @@
                 
                 map.on('mapwize:click', e => {
                     if (e.place != null) {
+                        console.log(e.place)
                         id = e.place._id;
 
                         if (id===origin) return;
@@ -197,9 +425,6 @@
             }).catch(err => {
                 console.error(err);
             });
-
-            
-            
 
         </script>
 
