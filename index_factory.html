@@ -316,7 +316,12 @@
                     route_name = static_route_to_plot.entries().next().value[0];
                     $('#distance_static').text(thiz.routes_dist[route_name].toFixed(2));
                     $('#name_static').text(route_name);
-                    map.addLayer(thiz.static_routes[route_name]);
+                    // map.addLayer(thiz.static_routes[route_name]);
+                } else if (static_route_to_plot.size === 0) {
+                    dis = 0;
+                    $('#distance_static').text(dis.toFixed(2));
+                    $('#name_static').text('');
+                    $('#static_message').html('Voce percorrerá um total de: <i id="distance_static"> 0.00</i> metros!');
                 }
 
 
