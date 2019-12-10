@@ -249,7 +249,7 @@
                 }
             }
             this.routes_name = ['asia', 'europa', 'oceania', 'brasil'];
-            this.routes_dist = {'europa': 5000, 'asia': 6000, 'oceania':5500, 'brasil':4000};
+            this.routes_dist = {'europa': 690.90, 'asia': 1002.23, 'oceania':503.72, 'brasil':774.27};
             this.id_map_to_static_route = {
                 '5de95557e15b1d0016ae0f21': 'europa',
                 '5de955854f7a350016fbbb90': 'europa',
@@ -336,7 +336,8 @@
                     // map.setPaintProperty('mapwize_layer_direction_line', 'line-dasharray' , [10,10])
 
                     thiz.direction = direction;
-                    $('#distance').text(direction.distance.toFixed(2))
+                    dis = direction.distance * 0.3064;
+                    $('#distance').text(dis.toFixed(2))
                     map.removeLayer('lines'+thiz.click);
                     thiz.click = thiz.click + 1;
                     features = direction.route.map(coords => ({
