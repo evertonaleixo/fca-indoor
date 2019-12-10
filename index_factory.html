@@ -249,7 +249,7 @@
                 }
             }
             this.routes_name = ['asia', 'europa', 'oceania', 'brasil'];
-            this.routes_dist = {'europa': 690.90, 'asia': 1002.23, 'oceania':503.72, 'brasil':774.27};
+            this.routes_dist = {'europa': (690.90*1.9), 'asia': (1002.23*1.9), 'oceania':(503.72*1.9), 'brasil':(774.27*1.9)};
             this.id_map_to_static_route = {
                 '5de95557e15b1d0016ae0f21': 'europa',
                 '5de955854f7a350016fbbb90': 'europa',
@@ -311,7 +311,7 @@
                 if (static_route_to_plot.size > 1) {
                     $('#distance_static').text('');
                     $('#name_static').text('Impossível!')
-                    $('#static_message').text('Não é possével passar por todos esses gravitacionais com apenas uma rota estática. São necessárias '+static_route_to_plot.size+'.');
+                    $('#static_message').text('Não é possível passar por todos esses gravitacionais com apenas uma rota estática. São necessárias '+static_route_to_plot.size+'.');
                 } else if (static_route_to_plot.size === 1) {
                     route_name = static_route_to_plot.entries().next().value[0];
                     $('#distance_static').text(thiz.routes_dist[route_name].toFixed(2));
