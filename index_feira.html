@@ -64,8 +64,9 @@
                         </div>
                         
                         <div style="padding-top: 30px;">
-                            <img src="./qr_img.png" alt="https://tinyurl.com/fca_workshop">
-                            <small>https://tinyurl.com/fca_workshop</small>
+                            <img width="200" src="./qr_img_workshop.png" alt="https://tinyurl.com/fca-workshop-mobile">
+                            <br />
+                            <small>https://tinyurl.com/fca-workshop-mobile</small>
                         </div>
                     </div>
                 </div>
@@ -114,7 +115,8 @@
                     // map.setPaintProperty('mapwize_layer_direction_line', 'line-dasharray' , [10,10])
 
                     thiz.direction = direction;
-                    $('#distance').text(direction.distance.toFixed(2))
+                    dis = direction.distance * 0.7023705;
+                    $('#distance').text(dis.toFixed(2))
                     map.removeLayer('lines'+thiz.click);
                     thiz.click = thiz.click + 1;
                     features = direction.route.map(coords => ({
@@ -168,6 +170,13 @@
                 var dis = 0;
                 $('#distance').text(dis.toFixed(2));
                 thiz.places_to_visit = [];
+
+                thiz.places_to_visit.forEach(place => {
+                    place_style = {
+                        fillColor: '#8b72a2'
+                    };
+                    map.setPlaceStyle(place.placeId, place_style);
+                });
                 plot_route(thiz.map, '')
             };
 
